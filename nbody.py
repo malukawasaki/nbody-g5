@@ -152,3 +152,18 @@ if __name__ == "__main__":
         print("Call this program with an integer as program argument")
         print("(to set the number of iterations for the n-body simulation).")
         sys.exit(1)
+        
+import time
+ 
+# create sample code for testing
+for j in range(5000, 500000, 5000000, 50000000):
+    # store iteration start timestamp
+    start = time.time()
+    a = 0
+    for i in range(j):
+        a += (i**5000)
+    # store iteration end timestamp
+    end = time.time()
+ 
+    # show time of execution per iteration
+    print(f"Iteration: {j}\tTime taken: {(end-start)*10**3:.03f}ms")
