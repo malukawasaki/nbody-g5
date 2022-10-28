@@ -256,7 +256,7 @@ int csv(int argc, char *argv[])
     {
         outputFile << state[i].name << ";" << state[i].position.x << ";" << state[i].position.y << ";" << state[i].position.z << std::endl;
     }
-    fs.close();
+    outputFile.close();
     return 0;
 }
 
