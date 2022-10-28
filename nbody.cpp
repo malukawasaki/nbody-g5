@@ -14,7 +14,9 @@
 #define _USE_MATH_DEFINES // https://docs.microsoft.com/en-us/cpp/c-runtime-library/math-constants?view=msvc-160
 #include <cmath>
 #include <iostream>
-
+#include <chrono>
+#include <fstream>
+#include <string>
 
 // these values are constant and not allowed to be changed
 const double SOLAR_MASS = 4 * M_PI * M_PI;
@@ -238,6 +240,25 @@ body state[] = {
         }
 };
 
+using namespace std::chrono;
+std:: ofstream outputFile;
+std:: ofstream fs;
+std:: string filename = "nbodyC.csv";
+
+int csv(int argc, char *argv[])
+{
+    outputFile.open(filename, std::ios::out | std::ios::app);
+
+    outputFile << "NAMES" << ";" << "X" << ";" << "Y" << ";" << "Z" << std::endl;
+
+    // Store the values of x,y,z for each body in a csv file
+    for (int i = 0; i < BODIES_COUNT; i++)
+    {
+        outputFile << state[i].name << ";" << state[i].position.x << ";" << state[i].position.y << ";" << state[i].position.z << std::endl;
+    }
+    fs.close();
+    return 0;
+}
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -255,4 +276,17 @@ int main(int argc, char **argv) {
         std::cout << energy(state) << std::endl;
         return EXIT_SUCCESS;
     }
+}
+
+#include <time.h>
+int time (int argc, char *argv[])
+{
+    clock_t start, end;
+    double cpu_time_used;
+    start = clock();
+    main(argc, argv);
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+    std::cout << "Time taken: " << cpu_time_used << std::endl;
+    return 0;
 }
