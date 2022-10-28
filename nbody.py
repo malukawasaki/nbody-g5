@@ -98,7 +98,7 @@ def advance(dt, n, bodies=SYSTEM, pairs=PAIRS):
         for (r, [vx, vy, vz], m) in bodies:
             write_csv(NAMES[i],r[0],r[1],r[2])
             i += 1
-            
+
 
 def report_energy(bodies=SYSTEM, pairs=PAIRS, e=0.0):
     for ((x1, y1, z1), v1, m1, (x2, y2, z2), v2, m2) in pairs:
@@ -121,7 +121,7 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[1] = py / m
     v[2] = pz / m
 
-
+#Create csv file's header
 def create_csv():
     with open('positionbodies.csv','w+', newline='') as f:    
         header = csv.writer(f, delimiter=";")
