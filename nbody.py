@@ -11,6 +11,8 @@
 
 import sys
 from math import sqrt, pi as PI
+import numpy as np
+import csv
 
 
 def combinations(l):
@@ -67,7 +69,9 @@ BODIES = {
 
 SYSTEM = tuple(BODIES.values())
 PAIRS = tuple(combinations(SYSTEM))
-
+NAMES = []
+for key, _ in BODIES.items():
+    NAMES.append(key)
 
 def advance(dt, n, bodies=SYSTEM, pairs=PAIRS):
     for i in range(n):
@@ -89,7 +93,12 @@ def advance(dt, n, bodies=SYSTEM, pairs=PAIRS):
             r[0] += dt * vx
             r[1] += dt * vy
             r[2] += dt * vz
-
+        
+        i = 0
+        for (r, [vx, vy, vz], m) in bodies:
+            write_csv(NAMES[i],r[0],r[1],r[2])
+            i += 1
+            
 
 def report_energy(bodies=SYSTEM, pairs=PAIRS, e=0.0):
     for ((x1, y1, z1), v1, m1, (x2, y2, z2), v2, m2) in pairs:
@@ -113,7 +122,21 @@ def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
     v[2] = pz / m
 
 
+def create_csv():
+    with open('positionbodies.csv','w+', newline='') as f:    
+        header = csv.writer(f, delimiter=";")
+        header.writerow(["NAMES", "X", "Y", "Z"])
+    f.close()
+
+#Store the values of x,y,z for each body in a csv file
+def write_csv(name,x,y,z):
+    with open('positionbodies.csv','a', newline='') as f:    
+        writer = csv.writer(f, delimiter=";")
+        writer.writerow([name, x, y, z])
+
+
 def main(n, ref="sun"):
+    create_csv()
     offset_momentum(BODIES[ref])
     report_energy()
     advance(0.01, n)
